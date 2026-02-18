@@ -1,0 +1,29 @@
+# JIRA Terraform Provider binary
+terraform-provider-jira
+terraform-provider-jira.exe
+
+# Go
+
+vendor/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfplan
+crash.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local test example (do not publish)
+examples/test/

@@ -1,0 +1,27 @@
+---
+alwaysApply: true
+---
+
+# Jira provider – hard constraints
+
+Treat these as **mandatory**. If any step cannot be done (e.g. missing path), **stop and ask** before changing code or running other commands.
+
+## Build and install
+
+1. **Build only with** `~/go/bin/go`  
+   - Use: `~/go/bin/go build -o terraform-provider-jira .`  
+   - Do **not** use `go` or `gofmt` from PATH unless they are the same as `~/go/bin/go`.
+
+2. **After every successful build** you must run the install step (do not skip; do not leave it to the user):
+   - Remove the previous provider from the examples/test project: delete `examples/test/.terraform` and `examples/test/.terraform.lock.hcl` so the next init installs the new build.
+   - Install for local testing: copy the built binary so Terraform can load it with `source = "local/jira"`:
+     - Create dir: `~/.terraform.d/plugins/registry.terraform.io/local/jira/0.1.0/linux_amd64/` (use `linux_amd64` on Linux, `darwin_amd64` or `darwin_arm64` on macOS).
+     - Copy with the versioned name: `cp <repo>/terraform-provider-jira ~/.terraform.d/plugins/registry.terraform.io/local/jira/0.1.0/linux_amd64/terraform-provider-jira_v0.1.0`.
+   - The copy writes outside the workspace, so run the install copy command with permission that allows writing to the user home (e.g. `all`) so this step always completes.
+   - Update examples/test to use the new provider: run `terraform init` in `examples/test` (after the copy) so the project installs the current binary; use network permission if needed.
+
+## Compliance
+
+- **Before the first tool or command**: mentally check that the next action obeys the rules above (build with `~/go/bin/go`, post-build cleanup and copy as specified).
+- **If something conflicts** (e.g. you want to run `go build` from PATH, or skip the copy step): **stop and ask** the user instead of proceeding.
+- **Permissions**: do not request elevated run options except for the post-build install copy, which is required by these rules.
