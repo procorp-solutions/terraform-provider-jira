@@ -1,11 +1,11 @@
-# CI: build and test on push/PR to main.
+# CI: build and test on push/PR to master.
 name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build:
